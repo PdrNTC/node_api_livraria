@@ -1,7 +1,8 @@
 import express from "express";
 import conectaNaDatabase from "./config/dbConnect.js";
+import livro from "./models/Livro.js";
 
-const conexao = await conectaNaDatabase(); // Instancia da conexão com o banco de dados.
+//const conexao = await conectaNaDatabase(); // Instancia da conexão com o banco de dados.
 
 conexao.on("error", (erro) => {
     console.error("Erro de conexão", erro);
@@ -36,8 +37,11 @@ app.get("/", (req, res) => {
 });
 
 // Rota para listar todos os livros mockados no array
-app.get("/livros", (req, res) => {
-    res.status(200).json(livros);
+app.get("/livros", async (req, res) => {
+    const listaLivros = await livro.find({});
+
+    res.status(200).json(listaLivros);
+    //res.status(200).json(livros);
 });
 
 // Rota para listar livros de acordo com o ID passado no EndPoint
