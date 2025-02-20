@@ -1,6 +1,6 @@
 import express from "express";
 import conectaNaDatabase from "./config/dbConnect.js";
-import livro from "./models/Livro.js";
+import routes from "./routes/index.js";
 
 //const conexao = await conectaNaDatabase(); // Instancia da conexão com o banco de dados.
 
@@ -13,18 +13,7 @@ conexao.once("open", () => {
 });
 
 const app = express(); //Instanciando a biblioteca express
-app.use(express.json()) // Middleware permite acesso as req e respostas
-
-const livros = [
-    {
-        id: 1,
-        titulo: "O senhor dos Anéis",
-    },
-    {
-        id: 2,
-        titulo: "O Hobbit",
-    }
-]
+routes(app); // Instanciando as rotas no APP com o express
 
 function buscaLivroPorId(id) {
     return livros.findIndex(livro => {
@@ -32,9 +21,6 @@ function buscaLivroPorId(id) {
     })
 }
 
-app.get("/", (req, res) => {
-    res.status(200).send("Curso de Node.JS");
-});
 
 // Rota para listar todos os livros mockados no array
 app.get("/livros", async (req, res) => {
